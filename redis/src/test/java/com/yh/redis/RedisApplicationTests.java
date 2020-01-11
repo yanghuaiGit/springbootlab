@@ -1,13 +1,14 @@
-package com.yh.springbootlab;
+package com.yh.redis;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringbootlabApplicationTests {
+class RedisApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }
