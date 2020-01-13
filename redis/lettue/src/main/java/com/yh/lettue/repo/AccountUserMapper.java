@@ -4,6 +4,9 @@ package com.yh.lettue.repo;
 import com.yh.lettue.model.pojo.AccountUser;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author huaiyang
  * @version 1.0.0
@@ -18,4 +21,6 @@ public interface AccountUserMapper {
     void createUser(AccountUser accountUser);
 
     AccountUser queryUserById(Long id);
+
+    List<AccountUser> queryByName(String name);
 }

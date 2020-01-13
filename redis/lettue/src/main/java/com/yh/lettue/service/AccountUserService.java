@@ -1,6 +1,9 @@
 package com.yh.lettue.service;
 
 import com.yh.lettue.model.pojo.AccountUser;
+import com.yh.lettue.model.vo.AccountCacheUser;
+
+import java.util.List;
 
 /**
  * @author huaiyang
@@ -13,5 +16,7 @@ public interface AccountUserService {
     void createUser(AccountUser accountUser);
 
     AccountUser queryUserById(Long id);
+
+    List<AccountCacheUser> queryByName(String name);
 
 }
