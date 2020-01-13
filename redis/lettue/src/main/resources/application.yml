@@ -6,8 +6,8 @@ spring:
       username: root
       password: root
 mybatis:
-
   mapper-locations:  classpath*:mapper/*.xml
-  type-handlers-package: com.yh.lettue.config.mybatis.EnumCodeTypeHandler
+  #  type-handlers-package: com.yh.lettue.config.mybatis
   configuration:
     map-underscore-to-camel-case: true
+    default-enum-type-handler: com.yh.lettue.config.mybatis.AutoEnumTypeHandler

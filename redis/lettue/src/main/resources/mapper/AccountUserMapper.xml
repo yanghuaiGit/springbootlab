@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.yh.lettue.repo.AccountUserMapper">
-
+    <resultMap id="BaseResultMap" type="com.yh.lettue.model.pojo.AccountUser">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <!--        <result column="type" property="type" jdbcType="TINYINT" typeHandler="com.yh.lettue.config.mybatis.EnumCodeTypeHandler"/>-->
+        <result column="type" property="type" jdbcType="TINYINT"/>
+    </resultMap>
     <insert id="createUser">
         insert into account_user( `type`,username) VALUES(#{type},#{username})
     </insert>
     <select id="queryUserById" resultType="com.yh.lettue.model.pojo.AccountUser">
-        select * from account_user where id = #{id}
+        select id, `type` ,username from account_user where id = #{id}
     </select>
 </mapper>
