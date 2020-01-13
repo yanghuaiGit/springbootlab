@@ -13,9 +13,14 @@ spring:
       pool:
         max-active: 5
         max-idle: 5
+  cache:
+    redis:
+      time-to-live: 5000
 mybatis:
   mapper-locations:  classpath*:mapper/*.xml
   #  type-handlers-package: com.yh.lettue.config.mybatis
   configuration:
     map-underscore-to-camel-case: true
     default-enum-type-handler: com.yh.lettue.config.mybatis.AutoEnumTypeHandler
+cache:
+  expireTime: 5
