@@ -1,5 +1,6 @@
 package com.yh.lettue.model.pojo;
 
+import com.yh.lettue.enmus.AccountTypeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ public class AccountUser implements Serializable {
     /**
      * 账户类型 0:员工,1:用户
      */
-    private Integer type;
+    private AccountTypeEnum type;
 
     /**
      * 账户来源 0:skr电商,1:sky新闻客户端
