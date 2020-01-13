@@ -25,9 +25,6 @@ public class AccountController {
     @Resource
     private AccountUserService accountUserService;
 
-    @Resource
-    private RedisTemplate<String, AccountCacheUser> redisTemplate;
-
 
     @PostMapping
     public void createAccount(@RequestBody AccountUser accountUser) {
@@ -44,21 +41,6 @@ public class AccountController {
         return accountUserService.queryByName(name);
     }
 
-
-    @GetMapping("/test")
-    public void test() {
-        GenericJackson2JsonRedisSerializer genericJackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
-        AccountCacheUser build = AccountCacheUser.builder().id(2L).username("redis").type(1).typeDesc("desc").build();
-        redisTemplate.opsForValue().set("1", AccountCacheUser.builder().id(1L).username("redis").type(1).typeDesc("desc").build());
-        redisTemplate.execute((RedisCallback<Boolean>) redisConnection ->
-                redisConnection.set("2".getBytes(), genericJackson2JsonRedisSerializer.serialize(build), Expiration.seconds(5000),
-                        RedisStringCommands.SetOption.SET_IF_ABSENT));
-    }
-
-    @GetMapping("/get")
-    public AccountCacheUser get() {
-        return redisTemplate.opsForValue().get("1");
-    }
 
 
 }
