@@ -14,6 +14,6 @@
         select id, `type` ,username from account_user where id = #{id}
     </select>
     <select id="queryByName" resultType="com.yh.lettue.model.pojo.AccountUser">
-         select id, `type` ,username from account_user where username like  CONCAT( #{name},"%")
+         select id, `type` ,username from account_user where username = #{name}
     </select>
 </mapper>
