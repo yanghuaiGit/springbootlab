@@ -1,6 +1,6 @@
 package com.yh.lettue.config.redis;
 
-import com.yh.lettue.model.pojo.User;
+import com.yh.lettue.model.pojo.AccountUser;
 import io.lettuce.core.ReadFrom;
 import org.springframework.boot.autoconfigure.data.redis.LettuceClientConfigurationBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +18,15 @@ import org.springframework.data.redis.core.RedisTemplate;
 public class RedisConfig {
 
     @Bean
-    public RedisTemplate<String, User> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, User> template = new RedisTemplate<>();
+    public RedisTemplate<String, AccountUser> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, AccountUser> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         return template;
     }
 
     /**
      * 优先读主节点  还可以配置优先读从
+     *
      * @return redis定制
      */
     @Bean
