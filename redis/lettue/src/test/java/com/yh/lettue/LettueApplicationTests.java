@@ -21,6 +21,10 @@ class LettueApplicationTests {
     private RedisTemplate<String, AccountCacheUser> redisTemplate;
 
     @Resource
+    private RedisTemplate<String, String> stringStringRedisTemplate;
+
+
+    @Resource
     private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
 
     @Resource
@@ -43,6 +47,8 @@ class LettueApplicationTests {
 
     @Test
     void redisOpt() {
+        stringStringRedisTemplate.opsForValue().set("ueser:123:2344","233");
+        stringStringRedisTemplate.opsForValue().set("ueser2::123:2344","233");
         log.info("是否存在{}", redisManager.hset("user1", "name", "yanghhuai"));
         log.info("是否存在{}", redisManager.hset("user1", "sex", "1"));
         log.info("是否存在{}", redisManager.hset("user2", "name", "wuyan"));
