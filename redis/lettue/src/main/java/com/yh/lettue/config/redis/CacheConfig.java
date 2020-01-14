@@ -9,10 +9,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import javax.annotation.Resource;
 import java.time.Duration;
 
 /**
@@ -23,9 +24,12 @@ import java.time.Duration;
 @Configuration
 @EnableCaching(proxyTargetClass = true)
 public class CacheConfig {
-    @Value("${cache.expireTime}")
     // 缓存超时时间
+    @Value("${cache.expireTime}")
     private int cacheExpireTime;
+
+    @Resource
+    private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
 
     /**
      * 配置@Cacheable、@CacheEvict等注解在没有指定Key的情况下，key生成策略
@@ -62,7 +66,7 @@ public class CacheConfig {
                 // 将 key 序列化成字符串
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 // 将 value 序列化成 json
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))//value序列化方式
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 // 设置缓存过期时间，单位秒
                 .entryTtl(Duration.ofSeconds(cacheExpireTime))
                 // 不缓存空值
