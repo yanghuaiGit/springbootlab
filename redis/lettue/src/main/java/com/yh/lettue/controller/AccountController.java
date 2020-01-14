@@ -7,7 +7,6 @@ import org.springframework.data.redis.connection.RedisStringCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.types.Expiration;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +17,6 @@ import java.util.List;
  * @author huaiyang
  * @version 1.0.0
  * @date 2020/1/13
- * @copyright 本内容仅限于浙江云贸科技有限公司内部传阅，禁止外泄以及用于其他的商业目的
  */
 @RestController
 public class AccountController {
@@ -28,6 +26,9 @@ public class AccountController {
 
     @Resource
     private RedisTemplate<String, AccountCacheUser> redisTemplate;
+
+    @Resource
+    private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer;
 
 
     @PostMapping
@@ -48,7 +49,6 @@ public class AccountController {
 
     @GetMapping("/test")
     public void test() {
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         AccountCacheUser build = AccountCacheUser.builder().id(2L).username("redis").type(1).typeDesc("desc").build();
         redisTemplate.opsForValue().set("1", AccountCacheUser.builder().id(1L).username("redis").type(1).typeDesc("desc").build());
         redisTemplate.execute((RedisCallback<Boolean>) redisConnection ->
