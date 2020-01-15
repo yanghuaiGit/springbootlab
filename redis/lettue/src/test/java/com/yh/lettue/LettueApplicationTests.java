@@ -47,8 +47,20 @@ class LettueApplicationTests {
 
     @Test
     void redisOpt() {
+        stringStringRedisTemplate.opsForZSet().add("12","123",123);
+        stringStringRedisTemplate.opsForZSet().add("12","1223",123);
+
+        stringStringRedisTemplate.opsForZSet().add("122","12233",123);
+        stringStringRedisTemplate.opsForZSet().add("122","1223",1223);
+
+        //将12 和 122两个集合取交集 其分数值为2个集合对应的分数值之和
+        stringStringRedisTemplate.opsForZSet().intersectAndStore("12","122","2");
+
         stringStringRedisTemplate.opsForValue().set("ueser:123:2344","233");
         stringStringRedisTemplate.opsForValue().set("ueser2::123:2344","233");
+
+
+
         log.info("是否存在{}", redisManager.hset("user1", "name", "yanghhuai"));
         log.info("是否存在{}", redisManager.hset("user1", "sex", "1"));
         log.info("是否存在{}", redisManager.hset("user2", "name", "wuyan"));
