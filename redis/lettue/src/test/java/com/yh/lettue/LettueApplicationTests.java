@@ -50,8 +50,19 @@ class LettueApplicationTests {
 
     @Test
     void redisOpt() {
+
+        //zset 按照从小到大的顺序排列 rank返回某个值的位置
         stringStringRedisTemplate.opsForZSet().add("12", "123", 123);
-        stringStringRedisTemplate.opsForZSet().add("12", "1223", 123);
+        log.info("12 的位置 {}", stringStringRedisTemplate.opsForZSet().rank("12", "123"));
+        stringStringRedisTemplate.opsForZSet().add("12", "1223", 1);
+        log.info("12 的位置 {}", stringStringRedisTemplate.opsForZSet().rank("12", "123"));
+        Boolean expire = stringStringRedisTemplate.expire("12", 100L, TimeUnit.SECONDS);
+        log.info("设置过期时间 {}",expire);
+        //不存在的key值 设置过期时间 返回false
+        expire = stringStringRedisTemplate.expire("1223", 50L, TimeUnit.SECONDS);
+        log.info("设置过期时间 {}",expire);
+
+
 
         stringStringRedisTemplate.opsForZSet().add("122", "12233", 123);
         stringStringRedisTemplate.opsForZSet().add("122", "1223", 1223);
@@ -89,4 +100,41 @@ class LettueApplicationTests {
         s1 = stringStringRedisTemplate.opsForValue().setIfPresent("time", "2");
         log.info("对已存在的key进行 setIfPresent{}", s1);
     }
+
+    @Test
+    void stringOpt() {
+
+
+        stringStringRedisTemplate.opsForValue().setBit("bit1", 0, true);
+        stringStringRedisTemplate.opsForValue().setBit("bit1", 1, false);
+        //bit redis插入bit 的值就是false true
+        Boolean bit = stringStringRedisTemplate.opsForValue().getBit("bit1", 0);
+        log.info("bit index 0 {}", bit);
+        bit = stringStringRedisTemplate.opsForValue().getBit("bit1", 1);
+        log.info("bit index 1 {}", bit);
+        //返回的追加完的value的长度
+        Integer ss = stringStringRedisTemplate.opsForValue().append("ss", "1");
+        log.info("append {}", ss);
+        ss = stringStringRedisTemplate.opsForValue().append("ss", "123");
+        log.info("append {}", ss);
+        String range = stringStringRedisTemplate.opsForValue().get("ss", 1, 3);
+        log.info("range {}", range);
+        //从第一个索引位置开始进行替换  如果超出了索引 以x00进行填充？应该是null填充
+        stringStringRedisTemplate.opsForValue().set("ss", "hah", 100);
+    }
+
+    @Test
+    void listOpt() {
+        Long list = stringStringRedisTemplate.opsForList().leftPushAll("list", "1", "2", "3", "4");
+        stringStringRedisTemplate.opsForList().trim("list", 1, 2);
+        log.info("左弹出{}", stringStringRedisTemplate.opsForList().leftPop("list"));
+
+        log.info("设置过期时间{}", stringStringRedisTemplate.expire("list", 100, TimeUnit.HOURS));
+
+
+    }
+
+//订阅发布
+    //监听者需实现   MessageListener 接口  stringStringRedisTemplate.convertAndSend(); 进行发布
 }
+
