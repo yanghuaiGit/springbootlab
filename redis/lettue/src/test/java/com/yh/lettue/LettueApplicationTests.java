@@ -92,6 +92,11 @@ class LettueApplicationTests {
 
     @Test
     void expirOpt() {
+        stringStringRedisTemplate.opsForValue().set("time", "1", 100L, TimeUnit.MINUTES);
+
+        stringStringRedisTemplate.opsForValue().set("time", "2", 200L, TimeUnit.MINUTES);
+  //直接覆盖 过期时间为-1 永久
+        stringStringRedisTemplate.opsForValue().set("time", "3");
         //key不存在 返回的值是false 不会设值  只有key存在 才会进行更新
         Boolean s1 = stringStringRedisTemplate.opsForValue().setIfPresent("s1", "2");
         log.info("对不存在的key进行 setIfPresent{}", s1);
