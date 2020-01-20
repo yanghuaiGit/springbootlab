@@ -50,18 +50,20 @@ class LettueApplicationTests {
 
     @Test
     void redisOpt() {
-
+        //这个其实就是分布式锁
+        log.info("设置不存在的key值 结果{}", redisTemplate.execute((RedisCallback<Boolean>) redisConnection ->
+                redisConnection.set("lock".getBytes(), "value".getBytes(), Expiration.seconds(10),
+                        RedisStringCommands.SetOption.SET_IF_ABSENT)));
         //zset 按照从小到大的顺序排列 rank返回某个值的位置
         stringStringRedisTemplate.opsForZSet().add("12", "123", 123);
         log.info("12 的位置 {}", stringStringRedisTemplate.opsForZSet().rank("12", "123"));
         stringStringRedisTemplate.opsForZSet().add("12", "1223", 1);
         log.info("12 的位置 {}", stringStringRedisTemplate.opsForZSet().rank("12", "123"));
         Boolean expire = stringStringRedisTemplate.expire("12", 100L, TimeUnit.SECONDS);
-        log.info("设置过期时间 {}",expire);
+        log.info("设置过期时间 {}", expire);
         //不存在的key值 设置过期时间 返回false
         expire = stringStringRedisTemplate.expire("1223", 50L, TimeUnit.SECONDS);
-        log.info("设置过期时间 {}",expire);
-
+        log.info("设置过期时间 {}", expire);
 
 
         stringStringRedisTemplate.opsForZSet().add("122", "12233", 123);
